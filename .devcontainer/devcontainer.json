@@ -1,0 +1,14 @@
+{
+  "name": "calculator",
+  "image": "mcr.microsoft.com/devcontainers/base:debian",
+  "features": {
+    "ghcr.io/devcontainers/features/go": {}
+  },
+  "customizations": {
+		"vscode": {
+			"extensions": [
+				"MS-vsliveshare.vsliveshare"
+			]
+		}
+	}
+}
