@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"strings"
@@ -18,30 +19,21 @@ func main() {
 
 	var res int
 	switch lop {
-	case "+":
-		fallthrough
-	case "add":
+	case "+", "add":
 		res = calculator.Add(exp.Left, exp.Right)
-	case "-":
-		fallthrough
-	case "subtract":
-		fallthrough
-	case "sub":
+	case "-", "subtract", "sub":
 		res = calculator.Subtract(exp.Left, exp.Right)
-	case "*":
-		fallthrough
-	case "multiply":
-		fallthrough
-	case "mult":
+	case "*", "multiply", "mult":
 		res = calculator.Multiply(exp.Left, exp.Right)
-	case "/":
-		fallthrough
-	case "divide":
-		fallthrough
-	case "div":
+	case "/", "divide", "div":
 		res, err = calculator.Divide(exp.Left, exp.Right)
+	case "!", "factorial", "fact":
+		res, err = calculator.Factorial(exp.Left)
 	default:
-		// error
+		err = errors.New("operator incorrect")
+	}
+	if err != nil {
+		panic(err)
 	}
 
 	fmt.Println(exp)
