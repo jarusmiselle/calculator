@@ -2,6 +2,8 @@ package calculator
 
 import (
 	"errors"
+	"fmt"
+	"log"
 	"testing"
 )
 
@@ -32,20 +34,24 @@ func TestFactorial(t *testing.T) {
 	}}
 
 	for _, c := range tt {
-		res, err := Factorial(c.input)
+		name := fmt.Sprintf("input: %d, expected: %d, err: %v", c.input, c.expected, c.expectedErr)
+		log.Println(name)
+		t.Run(name, func(t *testing.T) {
+			res, err := Factorial(c.input)
 
-		if res != c.expected {
-			t.Fatal("response did not match expected")
-		}
+			if res != c.expected {
+				t.Fatal("response did not match expected")
+			}
 
-		if c.expectedErr != nil {
-			if err == nil || c.expectedErr.Error() != err.Error() {
-				t.Fatal("error did not match expectedErr")
+			if c.expectedErr != nil {
+				if err == nil || c.expectedErr.Error() != err.Error() {
+					t.Fatal("error did not match expectedErr")
+				}
+			} else {
+				if err != nil {
+					t.Fatal("error was not nil")
+				}
 			}
-		} else {
-			if err != nil {
-				t.Fatal("error was not nil")
-			}
-		}
+		})
 	}
 }
