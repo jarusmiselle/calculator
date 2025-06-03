@@ -9,27 +9,27 @@ import (
 
 func TestFactorial(t *testing.T) {
 	tt := []struct {
-		input       float64
+		input       []float64
 		expected    float64
 		expectedErr error
 	}{{
-		input:       -2,
+		input:       []float64{-2},
 		expected:    0,
-		expectedErr: errors.New("-2 should be zero or higher"),
+		expectedErr: errors.New("-2.000000 should be zero or higher"),
 	}, {
-		input:    0,
+		input:    []float64{0},
 		expected: 1,
 	}, {
-		input:    1,
+		input:    []float64{1},
 		expected: 1,
 	}, {
-		input:    3,
+		input:    []float64{3},
 		expected: 6,
 	}, {
-		input:    4,
+		input:    []float64{4},
 		expected: 24,
 	}, {
-		input:    5,
+		input:    []float64{5},
 		expected: 120,
 	}}
 
@@ -45,7 +45,7 @@ func TestFactorial(t *testing.T) {
 
 			if c.expectedErr != nil {
 				if err == nil || c.expectedErr.Error() != err.Error() {
-					t.Fatal("error did not match expectedErr")
+					t.Fatalf("error %s did not match expectedErr %s", c.expectedErr, err)
 				}
 			} else {
 				if err != nil {

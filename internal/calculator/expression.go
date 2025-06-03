@@ -2,35 +2,32 @@ package calculator
 
 import (
 	"errors"
+	"fmt"
 	"strconv"
+	"strings"
 )
 
 type Expression struct {
-	Op    string
-	Left  int
-	Right int
+	Op   string
+	Args []float64
 }
 
 func GetExpression(args []string) (Expression, error) {
 	var exp Expression
 
-	if len(args) != 3 {
-		return exp, errors.New("usage: calc operation left right")
+	if len(args) <= 1 {
+		return exp, errors.New("usage: calc operation ..args")
 	}
 
-	exp.Op = args[0]
+	exp.Op = strings.ToLower(args[0])
 
-	left, err := strconv.Atoi(args[1])
-	if err != nil {
-		return exp, err
+	for _, arg := range args[1:] {
+		f, err := strconv.ParseFloat(arg, 64)
+		if err != nil {
+			return exp, fmt.Errorf("parse args: %w", err)
+		}
+		exp.Args = append(exp.Args, f)
 	}
-	exp.Left = left
-
-	right, err := strconv.Atoi(args[2])
-	if err != nil {
-		return exp, err
-	}
-	exp.Right = right
 
 	return exp, nil
 }
