@@ -16,22 +16,12 @@ func main() {
 	}
 
 	lop := strings.ToLower(exp.Op)
-
-	var res int
-	switch lop {
-	case "+", "add":
-		res = calculator.Add(exp.Left, exp.Right)
-	case "-", "subtract", "sub":
-		res = calculator.Subtract(exp.Left, exp.Right)
-	case "*", "multiply", "mult":
-		res = calculator.Multiply(exp.Left, exp.Right)
-	case "/", "divide", "div":
-		res, err = calculator.Divide(exp.Left, exp.Right)
-	case "!", "factorial", "fact":
-		res, err = calculator.Factorial(exp.Left)
-	default:
-		err = errors.New("operator incorrect")
+	opf, ok := calculator.Operations[lop]
+	if !ok {
+		panic(errors.New("invalid operation"))
 	}
+
+	res, err := opf(exp.Left, exp.Right)
 	if err != nil {
 		panic(err)
 	}

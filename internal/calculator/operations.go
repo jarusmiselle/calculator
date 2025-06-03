@@ -5,22 +5,38 @@ import (
 	"strconv"
 )
 
-func Add(left int, right int) int {
+type operation func(left, right int) (int, error)
+
+var Operations = map[string]operation{
+	"add":      add,
+	"+":        add,
+	"subtract": subtract,
+	"sub":      subtract,
+	"-":        subtract,
+	"multiply": multiply,
+	"mul":      multiply,
+	"*":        multiply,
+	"divide":   divide,
+	"div":      divide,
+	"/":        divide,
+}
+
+func add(left int, right int) (int, error) {
 	res := left + right
-	return res
+	return res, nil
 }
 
-func Subtract(left int, right int) int {
+func subtract(left int, right int) (int, error) {
 	res := left - right
-	return res
+	return res, nil
 }
 
-func Multiply(left int, right int) int {
+func multiply(left int, right int) (int, error) {
 	res := left * right
-	return res
+	return res, nil
 }
 
-func Divide(left int, right int) (int, error) {
+func divide(left int, right int) (int, error) {
 	if right == 0 {
 		return 0, errors.New("right cannot equal zero")
 	}
@@ -29,7 +45,7 @@ func Divide(left int, right int) (int, error) {
 	return res, nil
 }
 
-func Factorial(left int) (int, error) {
+func factorial(left int) (int, error) {
 	if left < 0 {
 		return 0, errors.New(strconv.Itoa(left) + " should be zero or higher")
 	}
@@ -38,6 +54,6 @@ func Factorial(left int) (int, error) {
 		return 1, nil
 	}
 
-	res, err := Factorial(left - 1)
+	res, err := factorial(left - 1)
 	return left * res, err
 }
