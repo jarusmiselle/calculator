@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/rhafezi1/calculator/pkg/calculator"
+	"github.com/rhafezi1/calculator/internal/calculator"
 )
 
 func main() {
