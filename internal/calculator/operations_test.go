@@ -9,8 +9,8 @@ import (
 
 func TestFactorial(t *testing.T) {
 	tt := []struct {
-		input       int
-		expected    int
+		input       float64
+		expected    float64
 		expectedErr error
 	}{{
 		input:       -2,
@@ -34,7 +34,7 @@ func TestFactorial(t *testing.T) {
 	}}
 
 	for _, c := range tt {
-		name := fmt.Sprintf("input: %d, expected: %d, err: %v", c.input, c.expected, c.expectedErr)
+		name := fmt.Sprintf("input: %f, expected: %f, err: %v", c.input, c.expected, c.expectedErr)
 		log.Println(name)
 		t.Run(name, func(t *testing.T) {
 			res, err := factorial(c.input)

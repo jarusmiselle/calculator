@@ -21,7 +21,7 @@ func main() {
 		panic(errors.New("invalid operation"))
 	}
 
-	res, err := opf(exp.Left, exp.Right)
+	res, err := opf(float64(exp.Left), float64(exp.Right))
 	if err != nil {
 		panic(err)
 	}

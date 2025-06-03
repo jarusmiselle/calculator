@@ -2,10 +2,10 @@ package calculator
 
 import (
 	"errors"
-	"strconv"
+	"fmt"
 )
 
-type operation func(left, right int) (int, error)
+type operation func(left, right float64) (float64, error)
 
 var Operations = map[string]operation{
 	"add":      add,
@@ -21,22 +21,22 @@ var Operations = map[string]operation{
 	"/":        divide,
 }
 
-func add(left int, right int) (int, error) {
+func add(left, right float64) (float64, error) {
 	res := left + right
 	return res, nil
 }
 
-func subtract(left int, right int) (int, error) {
+func subtract(left, right float64) (float64, error) {
 	res := left - right
 	return res, nil
 }
 
-func multiply(left int, right int) (int, error) {
+func multiply(left, right float64) (float64, error) {
 	res := left * right
 	return res, nil
 }
 
-func divide(left int, right int) (int, error) {
+func divide(left, right float64) (float64, error) {
 	if right == 0 {
 		return 0, errors.New("right cannot equal zero")
 	}
@@ -45,9 +45,9 @@ func divide(left int, right int) (int, error) {
 	return res, nil
 }
 
-func factorial(left int) (int, error) {
+func factorial(left float64) (float64, error) {
 	if left < 0 {
-		return 0, errors.New(strconv.Itoa(left) + " should be zero or higher")
+		return 0, fmt.Errorf("%f should be zero or higher", left)
 	}
 
 	if left == 1 || left == 0 {
