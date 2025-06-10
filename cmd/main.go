@@ -10,12 +10,14 @@ import (
 func main() {
 	exp, err := calculator.GetExpression(os.Args[1:])
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
+		os.Exit(1)
 	}
 
 	res, err := exp.Evaluate()
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
+		os.Exit(1)
 	}
 
 	fmt.Println(exp)

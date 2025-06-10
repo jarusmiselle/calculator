@@ -9,7 +9,6 @@ import (
 
 type Expression struct {
 	opFunk operation
-	op     string
 	args   []float64
 }
 
@@ -20,11 +19,9 @@ func GetExpression(args []string) (Expression, error) {
 		return exp, errors.New("usage: calc operation ..args")
 	}
 
-	exp.op = strings.ToLower(args[0])
-
-	opf, ok := Operations[exp.op]
+	opf, ok := operations[strings.ToLower(args[0])]
 	if !ok {
-		panic(errors.New("invalid operation"))
+		return exp, errors.New("invalid operation")
 	}
 	exp.opFunk = opf
 

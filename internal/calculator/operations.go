@@ -7,7 +7,7 @@ import (
 
 type operation func(args []float64) (float64, error)
 
-var Operations = map[string]operation{
+var operations = map[string]operation{
 	"add":       add,
 	"+":         add,
 	"subtract":  subtract,
