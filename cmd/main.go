@@ -1,10 +1,8 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"os"
-	"strings"
 
 	"github.com/rhafezi1/calculator/internal/calculator"
 )
@@ -15,13 +13,7 @@ func main() {
 		panic(err)
 	}
 
-	lop := strings.ToLower(exp.Op)
-	opf, ok := calculator.Operations[lop]
-	if !ok {
-		panic(errors.New("invalid operation"))
-	}
-
-	res, err := opf(exp.Args)
+	res, err := exp.OpFunk(exp.Args)
 	if err != nil {
 		panic(err)
 	}

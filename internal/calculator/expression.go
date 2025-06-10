@@ -8,8 +8,9 @@ import (
 )
 
 type Expression struct {
-	Op   string
-	Args []float64
+	OpFunk operation
+	Op     string
+	Args   []float64
 }
 
 func GetExpression(args []string) (Expression, error) {
@@ -20,6 +21,12 @@ func GetExpression(args []string) (Expression, error) {
 	}
 
 	exp.Op = strings.ToLower(args[0])
+
+	opf, ok := Operations[exp.Op]
+	if !ok {
+		panic(errors.New("invalid operation"))
+	}
+	exp.OpFunk = opf
 
 	for _, arg := range args[1:] {
 		f, err := strconv.ParseFloat(arg, 64)
