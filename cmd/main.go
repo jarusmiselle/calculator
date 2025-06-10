@@ -13,7 +13,7 @@ func main() {
 		panic(err)
 	}
 
-	res, err := exp.OpFunk(exp.Args)
+	res, err := exp.Evaluate()
 	if err != nil {
 		panic(err)
 	}
