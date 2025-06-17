@@ -7,14 +7,16 @@ import (
 	"testing"
 )
 
+type operationsTestCase struct {
+	input       []float64
+	expected    float64
+	expectedErr error
+}
+
 func TestAdd(t *testing.T) {
 	t.Parallel()
 
-	tt := []struct {
-		input       []float64
-		expected    float64
-		expectedErr error
-	}{{
+	tt := []operationsTestCase{{
 		input:    []float64{5, 36},
 		expected: 41,
 	}, {
@@ -65,11 +67,7 @@ func TestAdd(t *testing.T) {
 func TestFactorial(t *testing.T) {
 	t.Parallel()
 
-	tt := []struct {
-		input       []float64
-		expected    float64
-		expectedErr error
-	}{{
+	tt := []operationsTestCase{{
 		input:       []float64{-2},
 		expected:    0,
 		expectedErr: errors.New("-2.000000 should be zero or higher"),
