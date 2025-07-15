@@ -12,15 +12,6 @@ func (e ValueExpression) Evaluate() (float64, error) {
 	return e.Value, nil
 }
 
-type UnaryExpression struct {
-	Value Expression
-}
-
-func (e UnaryExpression) Evaluate() (float64, error) {
-	v, err := e.Value.Evaluate()
-	return -v, err
-}
-
 type BinaryExpression struct {
 	Left  Expression
 	Right Expression

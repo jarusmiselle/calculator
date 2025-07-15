@@ -2,26 +2,25 @@ package calculator
 
 import (
 	"errors"
-	"fmt"
 )
 
-type operation func(args []float64) (float64, error)
+type operation func([]float64) (float64, error)
 
 var operations = map[string]operation{
-	"add":       add,
-	"+":         add,
-	"subtract":  subtract,
-	"sub":       subtract,
-	"-":         subtract,
-	"multiply":  multiply,
-	"mul":       multiply,
-	"*":         multiply,
-	"divide":    divide,
-	"div":       divide,
-	"/":         divide,
-	"factorial": factorial,
-	"fact":      factorial,
-	"!":         factorial,
+	"add":      add,
+	"+":        add,
+	"subtract": subtract,
+	"sub":      subtract,
+	"-":        subtract,
+	"multiply": multiply,
+	"mul":      multiply,
+	"*":        multiply,
+	"divide":   divide,
+	"div":      divide,
+	"/":        divide,
+	// "factorial": factorial,
+	// "fact":      factorial,
+	// "!":         factorial,
 }
 
 func add(args []float64) (float64, error) {
@@ -70,22 +69,4 @@ func divide(args []float64) (float64, error) {
 
 	res = args[0] / args[1]
 	return res, nil
-}
-
-func factorial(args []float64) (float64, error) {
-	var res float64
-
-	if len(args) != 1 {
-		return res, errors.New("usage: calc factorial arg")
-	}
-	if args[0] < 0 {
-		return 0, fmt.Errorf("%f should be zero or higher", args[0])
-	}
-
-	if args[0] == 1 || args[0] == 0 {
-		return 1, nil
-	}
-
-	res, err := factorial([]float64{args[0] - 1})
-	return args[0] * res, err
 }

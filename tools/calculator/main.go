@@ -8,7 +8,7 @@ import (
 
 func main() {
 	ue := expressiontree.UnaryExpression{
-		Value: expressiontree.ValueExpression{
+		Operand: expressiontree.ValueExpression{
 			Value: 23,
 		},
 	}
