@@ -4,14 +4,6 @@ type Expression interface {
 	Evaluate() (float64, error)
 }
 
-type ValueExpression struct {
-	Value float64
-}
-
-func (e ValueExpression) Evaluate() (float64, error) {
-	return e.Value, nil
-}
-
 type BinaryExpression struct {
 	Left  Expression
 	Right Expression

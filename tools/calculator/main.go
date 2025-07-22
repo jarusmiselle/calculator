@@ -7,18 +7,16 @@ import (
 )
 
 func main() {
-	ue, err := et.NewUnaryExpression("!", et.ValueExpression{
-		Value: 23,
-	})
+	ve, _ := et.NewValueExpression(23)
+	ue, err := et.NewUnaryExpression("!", ve)
 	if err != nil {
 		panic(err)
 	}
 
+	ve, _ = et.NewValueExpression(62)
 	exp := et.BinaryExpression{
-		Left: ue,
-		Right: et.ValueExpression{
-			Value: 62,
-		},
+		Left:  ue,
+		Right: ve,
 	}
 
 	fmt.Println(ue)

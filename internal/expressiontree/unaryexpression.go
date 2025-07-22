@@ -4,8 +4,6 @@ import (
 	"fmt"
 )
 
-type unaryOperation func(float64) (float64, error)
-
 type UnaryExpression struct {
 	operation unaryOperation
 	operand   Expression
@@ -33,6 +31,8 @@ func (ue UnaryExpression) Evaluate() (float64, error) {
 	return ue.operation(v)
 }
 
+type unaryOperation func(float64) (float64, error)
+
 func factorial(operand float64) (float64, error) {
 	var res float64
 
@@ -48,6 +48,11 @@ func factorial(operand float64) (float64, error) {
 	return operand * res, err
 }
 
+func negate(operand float64) (float64, error) {
+	return -operand, nil
+}
+
 var unaryOperations = map[string]unaryOperation{
 	"!": factorial,
+	"-": negate,
 }
