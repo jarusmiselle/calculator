@@ -1,4 +1,4 @@
-package expressiontree
+package expression
 
 type ValueExpression struct {
 	value float64

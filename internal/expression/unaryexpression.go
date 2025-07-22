@@ -1,4 +1,4 @@
-package expressiontree
+package expression
 
 import (
 	"fmt"

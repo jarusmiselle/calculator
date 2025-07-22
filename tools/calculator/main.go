@@ -3,20 +3,20 @@ package main
 import (
 	"fmt"
 
-	et "github.com/rhafezi1/calculator/internal/expressiontree"
+	"github.com/rhafezi1/calculator/internal/expression"
 )
 
 func main() {
-	ve, _ := et.NewValueExpression(23)
-	ue, err := et.NewUnaryExpression("!", ve)
+	ve, _ := expression.NewValueExpression(23)
+	ue, err := expression.NewUnaryExpression("!", ve)
 	if err != nil {
 		panic(err)
 	}
 
-	ve, _ = et.NewValueExpression(62)
-	exp := et.BinaryExpression{
-		Left:  ue,
-		Right: ve,
+	ve, _ = expression.NewValueExpression(62)
+	exp, err := expression.NewBinaryExpression("+", ue, ve)
+	if err != nil {
+		panic(err)
 	}
 
 	fmt.Println(ue)
