@@ -8,24 +8,24 @@ type unaryOperation func(float64) (float64, error)
 
 type UnaryExpression struct {
 	operation unaryOperation
-	Operand   Expression
+	operand   Expression
 }
 
-func NewUe(operation string, operand Expression) (UnaryExpression, error) {
+func NewUnaryExpression(operation string, operand Expression) (UnaryExpression, error) {
 	op, ok := unaryOperations[operation]
 	if !ok {
 		return UnaryExpression{}, fmt.Errorf("invalid unary operation: %s", operation)
 	}
 
 	ue := UnaryExpression{
-		Operand:   operand,
 		operation: op,
+		operand:   operand,
 	}
 	return ue, nil
 }
 
 func (ue UnaryExpression) Evaluate() (float64, error) {
-	v, err := ue.Operand.Evaluate()
+	v, err := ue.operand.Evaluate()
 	if err != nil {
 		return v, err
 	}
