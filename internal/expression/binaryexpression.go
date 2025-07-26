@@ -41,4 +41,37 @@ func (e BinaryExpression) Evaluate() (float64, error) {
 
 type binaryOperation func(float64, float64) (float64, error)
 
-var binaryOperations = map[string]binaryOperation{}
+func add(left, right float64) (float64, error) {
+	res := left + right
+
+	return res, nil
+}
+
+func subtract(left, right float64) (float64, error) {
+	res := left - right
+
+	return res, nil
+}
+
+func multiply(left, right float64) (float64, error) {
+	res := left * right
+
+	return res, nil
+}
+
+func divide(left, right float64) (float64, error) {
+	if right == 0 {
+		return 0, fmt.Errorf("invalid: cannot divide by zero")
+	}
+
+	res := left / right
+
+	return res, nil
+}
+
+var binaryOperations = map[string]binaryOperation{
+	"+": add,
+	"-": subtract,
+	"*": multiply,
+	"/": divide,
+}
