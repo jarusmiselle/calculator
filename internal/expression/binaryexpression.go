@@ -35,8 +35,7 @@ func (e BinaryExpression) Evaluate() (float64, error) {
 		return v, err
 	}
 
-	v = l + r
-	return v, nil
+	return e.operation(l, r)
 }
 
 type binaryOperation func(float64, float64) (float64, error)
