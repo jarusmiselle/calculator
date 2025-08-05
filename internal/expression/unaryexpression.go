@@ -2,6 +2,7 @@ package expression
 
 import (
 	"fmt"
+	"math"
 )
 
 type UnaryExpression struct {
@@ -28,19 +29,29 @@ func (ue UnaryExpression) Evaluate() (float64, error) {
 		return v, err
 	}
 
-	return ue.operation(v)
+	return ue.operation.function(v)
 }
 
-type unaryOperation func(float64) (float64, error)
+type unaryOperationFunc func(float64) (float64, error)
+
+type unaryOperation struct {
+	symbol   rune
+	rank     uint8
+	function unaryOperationFunc
+}
 
 func factorial(operand float64) (float64, error) {
 	var res float64
 
-	if operand < 0 {
-		return 0, fmt.Errorf("%f should be zero or higher", operand)
+	if operand != math.Trunc(operand) {
+		return res, fmt.Errorf("%f is invalid. factorial is only defined for integers", operand)
 	}
 
-	if operand == 1 || operand == 0 {
+	if operand < 0 {
+		return res, fmt.Errorf("%f should be zero or higher", operand)
+	}
+
+	if operand <= 1 {
 		return 1, nil
 	}
 
@@ -53,6 +64,14 @@ func negate(operand float64) (float64, error) {
 }
 
 var unaryOperations = map[string]unaryOperation{
-	"!": factorial,
-	"-": negate,
+	"!": {
+		symbol:   '!',
+		rank:     1,
+		function: factorial,
+	},
+	"-": {
+		symbol:   '-',
+		rank:     2,
+		function: negate,
+	},
 }
