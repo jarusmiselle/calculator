@@ -32,12 +32,17 @@ func (ue UnaryExpression) Evaluate() (float64, error) {
 	return ue.operation.function(v)
 }
 
+func (ue UnaryExpression) String() string {
+	return ue.operation.string(fmt.Sprint(ue.operand))
+}
+
 type unaryOperationFunc func(float64) (float64, error)
 
 type unaryOperation struct {
 	symbol   rune
 	rank     uint8
 	function unaryOperationFunc
+	string   func(string) string
 }
 
 func factorial(operand float64) (float64, error) {
@@ -68,10 +73,12 @@ var unaryOperations = map[string]unaryOperation{
 		symbol:   '!',
 		rank:     1,
 		function: factorial,
+		string:   func(s string) string { return fmt.Sprintf("%s!", s) },
 	},
 	"-": {
 		symbol:   '-',
 		rank:     2,
 		function: negate,
+		string:   func(s string) string { return fmt.Sprintf("-%s", s) },
 	},
 }
