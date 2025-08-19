@@ -23,29 +23,27 @@ func NewBinaryExpression(operation string, left, right Expression) (BinaryExpres
 }
 
 func (e BinaryExpression) Evaluate() (float64, error) {
-	var v float64
-
 	l, err := e.left.Evaluate()
 	if err != nil {
-		return v, err
+		return 0, err
 	}
 
 	r, err := e.right.Evaluate()
 	if err != nil {
-		return v, err
+		return 0, err
 	}
 
-	return e.operation.function(l, r)
+	return e.operation.evaluate(l, r)
 }
 
 func (be BinaryExpression) String() string {
-	return be.operation.string(be.left, be.right)
+	return be.operation.stringify(be.left, be.right)
 }
 
 type binaryOperation struct {
-	rank     uint8
-	function func(float64, float64) (float64, error)
-	string   func(Expression, Expression) string
+	rank      uint8
+	evaluate  func(float64, float64) (float64, error)
+	stringify func(Expression, Expression) string
 }
 
 func add(left, right float64) (float64, error) {
@@ -94,23 +92,23 @@ func divideString(left, right Expression) string {
 
 var binaryOperations = map[string]binaryOperation{
 	"+": {
-		rank:     4,
-		function: add,
-		string:   addString,
+		rank:      4,
+		evaluate:  add,
+		stringify: addString,
 	},
 	"-": {
-		rank:     4,
-		function: subtract,
-		string:   subtractString,
+		rank:      4,
+		evaluate:  subtract,
+		stringify: subtractString,
 	},
 	"*": {
-		rank:     3,
-		function: multiply,
-		string:   multiplyString,
+		rank:      3,
+		evaluate:  multiply,
+		stringify: multiplyString,
 	},
 	"/": {
-		rank:     3,
-		function: divide,
-		string:   divideString,
+		rank:      3,
+		evaluate:  divide,
+		stringify: divideString,
 	},
 }

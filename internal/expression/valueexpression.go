@@ -2,18 +2,12 @@ package expression
 
 import "fmt"
 
-type ValueExpression struct {
-	value float64
-}
-
-func NewValueExpression(value float64) (ValueExpression, error) {
-	return ValueExpression{value: value}, nil
-}
+type ValueExpression float64
 
 func (e ValueExpression) Evaluate() (float64, error) {
-	return e.value, nil
+	return float64(e), nil
 }
 
 func (e ValueExpression) String() string {
-	return fmt.Sprintf("%f", e.value)
+	return fmt.Sprintf("%f", e)
 }

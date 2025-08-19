@@ -29,17 +29,17 @@ func (ue UnaryExpression) Evaluate() (float64, error) {
 		return v, err
 	}
 
-	return ue.operation.function(v)
+	return ue.operation.evaluate(v)
 }
 
 func (ue UnaryExpression) String() string {
-	return ue.operation.string(ue.operand)
+	return ue.operation.stringify(ue.operand)
 }
 
 type unaryOperation struct {
-	rank     uint8
-	function func(float64) (float64, error)
-	string   func(Expression) string
+	rank      uint8
+	evaluate  func(float64) (float64, error)
+	stringify func(Expression) string
 }
 
 func factorial(operand float64) (float64, error) {
@@ -53,12 +53,15 @@ func factorial(operand float64) (float64, error) {
 		return res, fmt.Errorf("%f should be zero or higher", operand)
 	}
 
+	return float64(factorialInt(uint64(operand))), nil
+}
+
+func factorialInt(operand uint64) uint64 {
 	if operand <= 1 {
-		return 1, nil
+		return 1
 	}
 
-	res, err := factorial(operand - 1)
-	return operand * res, err
+	return operand * factorialInt(operand)
 }
 
 func factorialString(op Expression) string {
@@ -75,13 +78,13 @@ func negateString(op Expression) string {
 
 var unaryOperations = map[string]unaryOperation{
 	"!": {
-		rank:     1,
-		function: factorial,
-		string:   factorialString,
+		rank:      1,
+		evaluate:  factorial,
+		stringify: factorialString,
 	},
 	"-": {
-		rank:     2,
-		function: negate,
-		string:   negateString,
+		rank:      2,
+		evaluate:  negate,
+		stringify: negateString,
 	},
 }
