@@ -1,3 +1,3 @@
-module github.com/rhafezi1/calculator
+module github.com/jarusmiselle/calculator
 
-go 1.23.5
+go 1.25
