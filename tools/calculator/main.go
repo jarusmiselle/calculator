@@ -3,18 +3,23 @@ package main
 import (
 	"fmt"
 
-	"github.com/rhafezi1/calculator/internal/expression"
+	"github.com/jarusmiselle/calculator/internal/expression"
 )
 
 func main() {
-	ve, _ := expression.NewValueExpression(23)
-	ue, err := expression.NewUnaryExpression("!", ve)
+	ue, err := expression.NewUnaryExpression(
+		"!",
+		expression.ValueExpression(3),
+	)
 	if err != nil {
 		panic(err)
 	}
 
-	ve, _ = expression.NewValueExpression(62)
-	exp, err := expression.NewBinaryExpression("+", ue, ve)
+	exp, err := expression.NewBinaryExpression(
+		"+",
+		ue,
+		expression.ValueExpression(62),
+	)
 	if err != nil {
 		panic(err)
 	}

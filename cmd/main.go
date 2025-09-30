@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/rhafezi1/calculator/internal/calculator"
+	"github.com/jarusmiselle/calculator/internal/calculator"
 )
 
 func main() {
