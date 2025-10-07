@@ -7,26 +7,61 @@ import (
 )
 
 func main() {
-	ue, err := expression.NewUnaryExpression(
-		"!",
-		expression.ValueExpression(3),
-	)
-	if err != nil {
-		panic(err)
-	}
+	s, t := ctof(30)
 
-	exp, err := expression.NewBinaryExpression(
+	x, y := ftoc(70)
+
+	fmt.Println(s)
+	fmt.Println(t)
+
+	fmt.Println(x)
+	fmt.Println(y)
+}
+
+func ctof(c float64) (string, float64) {
+	sco, _ := expression.NewBinaryExpression(
+		"/",
+		expression.ValueExpression(9),
+		expression.ValueExpression(5),
+	)
+
+	sct, _ := expression.NewBinaryExpression(
+		"*",
+		expression.ValueExpression(c),
+		sco,
+	)
+
+	f, _ := expression.NewBinaryExpression(
 		"+",
-		ue,
-		expression.ValueExpression(62),
+		sct,
+		expression.ValueExpression(32),
 	)
-	if err != nil {
-		panic(err)
-	}
 
-	fmt.Println(ue)
-	fmt.Println(ue.Evaluate())
+	res, _ := f.Evaluate()
 
-	fmt.Println(exp)
-	fmt.Println(exp.Evaluate())
+	return f.String(), res
+}
+
+func ftoc(f float64) (string, float64) {
+	sco, _ := expression.NewBinaryExpression(
+		"/",
+		expression.ValueExpression(5),
+		expression.ValueExpression(9),
+	)
+
+	sct, _ := expression.NewBinaryExpression(
+		"-",
+		expression.ValueExpression(f),
+		expression.ValueExpression(32),
+	)
+
+	c, _ := expression.NewBinaryExpression(
+		"*",
+		sct,
+		sco,
+	)
+
+	res, _ := c.Evaluate()
+
+	return c.String(), res
 }
