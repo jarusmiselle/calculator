@@ -32,12 +32,16 @@ func (ue UnaryExpression) Evaluate() (float64, error) {
 	return ue.operation.evaluate(v)
 }
 
+func (ue UnaryExpression) Rank() int {
+	return ue.operation.rank
+}
+
 func (ue UnaryExpression) String() string {
 	return ue.operation.stringify(ue.operand)
 }
 
 type unaryOperation struct {
-	rank      uint8
+	rank      int
 	evaluate  func(float64) (float64, error)
 	stringify func(Expression) string
 }

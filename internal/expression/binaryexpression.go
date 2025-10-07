@@ -36,14 +36,28 @@ func (e BinaryExpression) Evaluate() (float64, error) {
 	return e.operation.evaluate(l, r)
 }
 
+func (be BinaryExpression) Rank() int {
+	return be.operation.rank
+}
+
 func (be BinaryExpression) String() string {
-	return be.operation.stringify(be.left, be.right)
+	return fmt.Sprintf(
+		be.operation.formatString,
+		fmt.Sprintf(
+			parens[be.left.Rank() > be.Rank()],
+			be.left,
+		),
+		fmt.Sprintf(
+			parens[be.right.Rank() > be.Rank()],
+			be.right,
+		),
+	)
 }
 
 type binaryOperation struct {
-	rank      uint8
-	evaluate  func(float64, float64) (float64, error)
-	stringify func(Expression, Expression) string
+	rank         int
+	evaluate     func(float64, float64) (float64, error)
+	formatString string
 }
 
 func add(left, right float64) (float64, error) {
@@ -52,28 +66,16 @@ func add(left, right float64) (float64, error) {
 	return res, nil
 }
 
-func addString(left, right Expression) string {
-	return fmt.Sprintf("%s+%s", left, right)
-}
-
 func subtract(left, right float64) (float64, error) {
 	res := left - right
 
 	return res, nil
 }
 
-func subtractString(left, right Expression) string {
-	return fmt.Sprintf("%s-%s", left, right)
-}
-
 func multiply(left, right float64) (float64, error) {
 	res := left * right
 
 	return res, nil
-}
-
-func multiplyString(left, right Expression) string {
-	return fmt.Sprintf("%s*%s", left, right)
 }
 
 func divide(left, right float64) (float64, error) {
@@ -86,29 +88,30 @@ func divide(left, right float64) (float64, error) {
 	return res, nil
 }
 
-func divideString(left, right Expression) string {
-	return fmt.Sprintf("%s/%s", left, right)
-}
-
 var binaryOperations = map[string]binaryOperation{
 	"+": {
-		rank:      4,
-		evaluate:  add,
-		stringify: addString,
+		rank:         4,
+		evaluate:     add,
+		formatString: "%s + %s",
 	},
 	"-": {
-		rank:      4,
-		evaluate:  subtract,
-		stringify: subtractString,
+		rank:         4,
+		evaluate:     subtract,
+		formatString: "%s - %s",
 	},
 	"*": {
-		rank:      3,
-		evaluate:  multiply,
-		stringify: multiplyString,
+		rank:         3,
+		evaluate:     multiply,
+		formatString: "%s * %s",
 	},
 	"/": {
-		rank:      3,
-		evaluate:  divide,
-		stringify: divideString,
+		rank:         3,
+		evaluate:     divide,
+		formatString: "%s / %s",
 	},
+}
+
+var parens = map[bool]string{
+	true:  "(%s)",
+	false: "%s",
 }
