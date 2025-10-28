@@ -3,11 +3,15 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+
+	"github.com/jarusmiselle/calculator/internal/expression"
 )
 
 func main() {
-	a()
-	b()
+	// a()
+	// b()
+	// c()
+	d()
 }
 
 func a() {
@@ -41,4 +45,34 @@ func b() {
 	var blueV string
 	json.Unmarshal([]byte(blue), &blueV)
 	fmt.Println(blueV)
+}
+
+func c() {
+	ex := must(expression.NewBinaryExpression(
+		"+",
+		expression.ValueExpression(4),
+		must(expression.NewUnaryExpression(
+			"-",
+			expression.ValueExpression(3),
+		)),
+	))
+
+	fmt.Println(ex)
+
+	b := must(json.Marshal(ex))
+	fmt.Println(string(b))
+}
+
+func d() {
+	v := expression.ValueExpression(4)
+
+	b := must(json.Marshal(v))
+	fmt.Println(string(b))
+}
+
+func must[T any](v T, err error) T {
+	if err != nil {
+		panic(err)
+	}
+	return v
 }
