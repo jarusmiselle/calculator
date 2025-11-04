@@ -1,0 +1,16 @@
+{
+    "type": "BinaryExpression",
+    "operation": "+",
+    "left": {
+        "type": "ValueExpression",
+        "value": 4
+    },
+    "right": {
+        "type": "UnaryExpression",
+        "operation": "-",
+        "operand": {
+            "type": "ValueExpression",
+            "value": 3
+        }
+    }
+}

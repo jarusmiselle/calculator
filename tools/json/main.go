@@ -68,6 +68,11 @@ func d() {
 
 	b := must(json.Marshal(v))
 	fmt.Println(string(b))
+
+	u := must(expression.NewUnaryExpression("-", expression.ValueExpression(3)))
+
+	b = must(json.Marshal(u))
+	fmt.Println(string(b))
 }
 
 func must[T any](v T, err error) T {

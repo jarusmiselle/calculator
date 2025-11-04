@@ -1,6 +1,7 @@
 package expression
 
 import (
+	"encoding/json"
 	"fmt"
 	"math"
 )
@@ -82,4 +83,17 @@ var unaryOperations = map[string]unaryOperation{
 		evaluate:  negate,
 		stringify: func(e Expression) string { return fmt.Sprintf("-%s", e) },
 	},
+}
+
+const unaryExpressionTypeKey = "UnaryExpression"
+
+func (u UnaryExpression) MarshalJSON() ([]byte, error) {
+	// FIXME: provide correct operation and operand
+	data := map[string]any{
+		"type":      unaryExpressionTypeKey,
+		"operation": "-",
+		"operand":   json.RawMessage("{}"),
+	}
+
+	return json.Marshal(data)
 }
