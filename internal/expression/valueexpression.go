@@ -21,9 +21,11 @@ func (e ValueExpression) String() string {
 	return fmt.Sprintf("%f", e)
 }
 
+const valueExpressionTypeKey = "ValueExpression"
+
 func (v ValueExpression) MarshalJSON() ([]byte, error) {
 	j := map[string]any{
-		"type":  "ValueExpression",
+		"type":  valueExpressionTypeKey,
 		"value": float64(v),
 	}
 
