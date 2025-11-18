@@ -5,12 +5,14 @@ import (
 	"fmt"
 
 	"github.com/jarusmiselle/calculator/internal/expression"
+	"github.com/jarusmiselle/calculator/internal/expression/unaryexpression"
+	"github.com/jarusmiselle/calculator/internal/expression/unaryoperation"
 )
 
 func main() {
-	// a()
-	// b()
-	// c()
+	a()
+	b()
+	c()
 	d()
 }
 
@@ -35,15 +37,24 @@ func b() {
 	blue := "\"grey\""
 
 	var numV int
-	json.Unmarshal([]byte(num), &numV)
+	err := json.Unmarshal([]byte(num), &numV)
+	if err != nil {
+		panic(err)
+	}
 	fmt.Println(numV)
 
 	var badV bool
-	json.Unmarshal([]byte(bad), &badV)
+	err = json.Unmarshal([]byte(bad), &badV)
+	if err != nil {
+		panic(err)
+	}
 	fmt.Println(badV)
 
 	var blueV string
-	json.Unmarshal([]byte(blue), &blueV)
+	err = json.Unmarshal([]byte(blue), &blueV)
+	if err != nil {
+		panic(err)
+	}
 	fmt.Println(blueV)
 }
 
@@ -51,8 +62,8 @@ func c() {
 	ex := must(expression.NewBinaryExpression(
 		"+",
 		expression.ValueExpression(4),
-		must(expression.NewUnaryExpression(
-			"-",
+		must(unaryexpression.New(
+			unaryoperation.Negation,
 			expression.ValueExpression(3),
 		)),
 	))
@@ -65,7 +76,10 @@ func c() {
 
 func d() {
 	v := expression.ValueExpression(4)
-	u := must(expression.NewUnaryExpression("-", expression.ValueExpression(3)))
+	u := must(unaryexpression.New(
+		unaryoperation.Negation,
+		expression.ValueExpression(3),
+	))
 	be := must(expression.NewBinaryExpression("+", v, u))
 
 	b, err := json.MarshalIndent(be, "", "  ")
