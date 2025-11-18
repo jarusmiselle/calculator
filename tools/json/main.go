@@ -65,13 +65,13 @@ func c() {
 
 func d() {
 	v := expression.ValueExpression(4)
-
-	b := must(json.Marshal(v))
-	fmt.Println(string(b))
-
 	u := must(expression.NewUnaryExpression("-", expression.ValueExpression(3)))
+	be := must(expression.NewBinaryExpression("+", v, u))
 
-	b = must(json.Marshal(u))
+	b, err := json.MarshalIndent(be, "", "  ")
+	if err != nil {
+		panic(err)
+	}
 	fmt.Println(string(b))
 }
 

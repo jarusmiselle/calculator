@@ -42,6 +42,7 @@ func (ue UnaryExpression) String() string {
 }
 
 type unaryOperation struct {
+	symbol    string
 	rank      int
 	evaluate  func(float64) (float64, error)
 	stringify func(Expression) string
@@ -74,11 +75,13 @@ func negate(operand float64) (float64, error) {
 
 var unaryOperations = map[string]unaryOperation{
 	"!": {
+		symbol:    "!",
 		rank:      1,
 		evaluate:  factorial,
 		stringify: func(e Expression) string { return fmt.Sprintf("%s!", e) },
 	},
 	"-": {
+		symbol:    "-",
 		rank:      2,
 		evaluate:  negate,
 		stringify: func(e Expression) string { return fmt.Sprintf("-%s", e) },
@@ -88,11 +91,16 @@ var unaryOperations = map[string]unaryOperation{
 const unaryExpressionTypeKey = "UnaryExpression"
 
 func (u UnaryExpression) MarshalJSON() ([]byte, error) {
-	// FIXME: provide correct operation and operand
-	data := map[string]any{
-		"type":      unaryExpressionTypeKey,
-		"operation": "-",
-		"operand":   json.RawMessage("{}"),
+	type marshaler struct {
+		Type      string     `json:"type"`
+		Operation string     `json:"operation"`
+		Operand   Expression `json:"operand"`
+	}
+
+	data := marshaler{
+		Type:      unaryExpressionTypeKey,
+		Operation: u.operation.symbol,
+		Operand:   u.operand,
 	}
 
 	return json.Marshal(data)

@@ -24,9 +24,14 @@ func (e ValueExpression) String() string {
 const valueExpressionTypeKey = "ValueExpression"
 
 func (v ValueExpression) MarshalJSON() ([]byte, error) {
-	j := map[string]any{
-		"type":  valueExpressionTypeKey,
-		"value": float64(v),
+	type marshaler struct {
+		Type  string  `json:"type"`
+		Value float64 `json:"value"`
+	}
+
+	j := marshaler{
+		Type:  valueExpressionTypeKey,
+		Value: float64(v),
 	}
 
 	return json.Marshal(j)
