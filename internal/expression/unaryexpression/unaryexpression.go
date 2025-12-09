@@ -2,13 +2,13 @@ package unaryexpression
 
 import (
 	"encoding/json"
-	"fmt"
+	"errors"
 
 	"github.com/jarusmiselle/calculator/internal/expression"
 	"github.com/jarusmiselle/calculator/internal/expression/unaryoperation"
 )
 
-var ErrInvalidUnaryOperation = fmt.Errorf("invalid unary operation")
+var ErrInvalidUnaryOperation = errors.New("invalid unary operation")
 
 type UnaryExpression struct {
 	operation unaryoperation.UnaryOperation

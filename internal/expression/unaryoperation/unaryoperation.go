@@ -23,20 +23,28 @@ func (uo UnaryOperation) Rank() int {
 }
 
 func (uo UnaryOperation) Evaluate(operand float64) (float64, error) {
+	if !uo.IsValid() {
+		return 0, fmt.Errorf("invalid unary operation: operation does not exist")
+	}
 	return uo.evaluate(operand)
 }
 
 func (uo UnaryOperation) Stringify(expr expression.Expression) string {
+	if !uo.IsValid() {
+		return fmt.Sprintf("<<%s>>", expr)
+	}
 	return uo.stringify(expr)
 }
 
 func (uo UnaryOperation) IsValid() bool {
-	_, ok := validOperators[uo.symbol]
+	_, ok := unaryOperationRegistry[uo.symbol]
 	return ok
 }
 
+var unaryOperationRegistry = make(map[string]UnaryOperation)
+
 var (
-	Negation = new(
+	Negation = registerUnaryOperation(
 		"-",
 		1,
 		func(operand float64) (float64, error) {
@@ -47,7 +55,7 @@ var (
 		},
 	)
 
-	Factorial = new(
+	Factorial = registerUnaryOperation(
 		"!",
 		2,
 		func(operand float64) (float64, error) {
@@ -73,25 +81,26 @@ var (
 	)
 )
 
-var validOperators = make(map[string]UnaryOperation)
-
-func new(symbol string, rank int, evaluate func(float64) (float64, error), stringify func(expression.Expression) string) UnaryOperation {
-	if _, ok := validOperators[symbol]; !ok {
-		validOperators[symbol] = UnaryOperation{
-			symbol:    symbol,
-			rank:      rank,
-			evaluate:  evaluate,
-			stringify: stringify,
-		}
+func registerUnaryOperation(
+	symbol string,
+	rank int,
+	evaluate func(float64) (float64, error),
+	stringify func(expression.Expression) string,
+) UnaryOperation {
+	unaryOperationRegistry[symbol] = UnaryOperation{
+		symbol:    symbol,
+		rank:      rank,
+		evaluate:  evaluate,
+		stringify: stringify,
 	}
 
-	return validOperators[symbol]
+	return unaryOperationRegistry[symbol]
 }
 
 func Parse(symbol string) (UnaryOperation, error) {
-	op, ok := validOperators[symbol]
+	op, ok := unaryOperationRegistry[symbol]
 	if !ok {
-		return UnaryOperation{}, fmt.Errorf("invalid unary operator: %s", symbol)
+		return op, fmt.Errorf("invalid unary operator: %s", symbol)
 	}
 
 	return op, nil
