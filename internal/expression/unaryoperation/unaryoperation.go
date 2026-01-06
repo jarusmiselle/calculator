@@ -1,11 +1,14 @@
 package unaryoperation
 
 import (
+	"errors"
 	"fmt"
 	"math"
 
 	"github.com/jarusmiselle/calculator/internal/expression"
 )
+
+var ErrInvalidUnaryOperation = errors.New("invalid unary operation: operation does not exist")
 
 type UnaryOperation struct {
 	symbol    string
@@ -24,7 +27,7 @@ func (uo UnaryOperation) Rank() int {
 
 func (uo UnaryOperation) Evaluate(operand float64) (float64, error) {
 	if !uo.IsValid() {
-		return 0, fmt.Errorf("invalid unary operation: operation does not exist")
+		return 0, ErrInvalidUnaryOperation
 	}
 	return uo.evaluate(operand)
 }

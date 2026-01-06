@@ -46,7 +46,7 @@ func (ue UnaryExpression) String() string {
 
 const unaryExpressionTypeKey = "UnaryExpression"
 
-func (u UnaryExpression) MarshalJSON() ([]byte, error) {
+func (ue UnaryExpression) MarshalJSON() ([]byte, error) {
 	type marshaler struct {
 		Type      string                `json:"type"`
 		Operation string                `json:"operation"`
@@ -55,8 +55,8 @@ func (u UnaryExpression) MarshalJSON() ([]byte, error) {
 
 	data := marshaler{
 		Type:      unaryExpressionTypeKey,
-		Operation: u.operation.Symbol(),
-		Operand:   u.operand,
+		Operation: ue.operation.Symbol(),
+		Operand:   ue.operand,
 	}
 
 	return json.Marshal(data)
