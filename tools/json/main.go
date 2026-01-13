@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 
 	"github.com/jarusmiselle/calculator/internal/expression"
@@ -10,10 +11,26 @@ import (
 )
 
 func main() {
-	a()
-	b()
-	c()
-	d()
+	// a()
+	// b()
+	// c()
+	// d()
+	// e()
+	err := f()
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	e := err
+	for e = errors.Unwrap(e); e != nil; e = errors.Unwrap(e) {
+		fmt.Println("caused by:", e)
+	}
+
+	e = errors.Unwrap(err)
+	for e != nil {
+		fmt.Println("caused by:", e)
+		e = errors.Unwrap(e)
+	}
 }
 
 func a() {
@@ -72,6 +89,7 @@ func c() {
 
 	b := must(json.Marshal(ex))
 	fmt.Println(string(b))
+	fmt.Println(len(b))
 }
 
 func d() {
@@ -87,6 +105,37 @@ func d() {
 		panic(err)
 	}
 	fmt.Println(string(b))
+	fmt.Println(len(b))
+}
+
+func e() {
+	data := []byte(`
+{
+	"type": "UnaryExpression",
+	"operation": "-",
+	"operand": {
+		"type": "ValueExpression",
+		"value": 3
+	}
+}`)
+
+	var ue unaryexpression.UnaryExpression
+	err := json.Unmarshal(data, &ue)
+	if err != nil {
+		fmt.Println(err)
+	}
+}
+
+func f() error {
+	data := []byte(`{"type": "ValueExpression","value": "3"}`)
+
+	var ve expression.ValueExpression
+	err := json.Unmarshal(data, &ve)
+	if err != nil {
+		return fmt.Errorf("f: %w", err)
+	}
+	fmt.Println(ve)
+	return nil
 }
 
 func must[T any](v T, err error) T {

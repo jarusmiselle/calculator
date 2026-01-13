@@ -36,3 +36,18 @@ func (v ValueExpression) MarshalJSON() ([]byte, error) {
 
 	return json.Marshal(j)
 }
+
+func (v *ValueExpression) UnmarshalJSON(data []byte) error {
+	type unmarshaler struct {
+		Value float64 `json:"value"`
+	}
+
+	var u unmarshaler
+	err := json.Unmarshal(data, &u)
+	if err != nil {
+		return fmt.Errorf("unmarshal ValueExpression: %w", err)
+	}
+
+	*v = ValueExpression(u.Value)
+	return nil
+}

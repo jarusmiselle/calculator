@@ -3,6 +3,7 @@ package unaryexpression
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 
 	"github.com/jarusmiselle/calculator/internal/expression"
 	"github.com/jarusmiselle/calculator/internal/expression/unaryoperation"
@@ -60,4 +61,17 @@ func (ue UnaryExpression) MarshalJSON() ([]byte, error) {
 	}
 
 	return json.Marshal(data)
+}
+
+func (ue *UnaryExpression) UnmarshalJSON(data []byte) error {
+	var d map[string]any
+	err := json.Unmarshal(data, &d)
+	if err != nil {
+		return err
+	}
+
+	for k, v := range d {
+		fmt.Printf("key: %s, val: %v\n", k, v)
+	}
+	return nil
 }
